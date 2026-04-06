@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.aliceincradle.pxlsloader'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation "org.joml:joml-primitives:1.10.0"
+    implementation "org.joml:joml:1.10.7"
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+    implementation 'org.apache.commons:commons-collections4:4.5.0-M2'
+    implementation 'org.snakeyaml:snakeyaml-engine:2.9'
+    implementation 'org.tinylog:tinylog-api:2.6.2'
+    implementation 'org.tinylog:tinylog-impl:2.6.2'
+}
+
+test {
+    useJUnitPlatform()
+}
