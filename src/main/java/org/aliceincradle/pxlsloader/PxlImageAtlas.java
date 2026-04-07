@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.util.Objects;
 
 public class PxlImageAtlas {
     Uv[] pos;
@@ -35,7 +36,9 @@ public class PxlImageAtlas {
                 try {
                     int w = b.getInt();
                     int h = b.getInt();
-                    image = ImageIO.read(new ByteArrayInputStream(s.loadFromPngFunction.apply(id)));
+                    image =
+                        ImageIO.read(new ByteArrayInputStream(Objects.requireNonNull(s.getLoadFromPngFunction()
+                                                                                             .apply(id))));
                     if (w != image.getWidth() || h != image.getHeight()) {
                         System.out.println(
                             "not equals image width and height: w=" + w + " h=" + h + " width=" +

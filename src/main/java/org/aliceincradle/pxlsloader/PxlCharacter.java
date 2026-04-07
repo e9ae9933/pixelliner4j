@@ -18,7 +18,7 @@ public class PxlCharacter {
     
     public PxlCharacter(byte[] b) {
         NoelByteBuffer buf = new NoelByteBuffer(b);
-        Settings s = new Settings();
+        Settings s = new Settings.Builder().build();
         load(buf, s);
         buf.end();
     }
@@ -148,7 +148,8 @@ public class PxlCharacter {
         buf.putSegment(packed);
     }
     
-    @NotNull BufferedImage getImageByKey(PixelLinerKey id) {
+    @NotNull
+    public BufferedImage getImageByKey(PixelLinerKey id) {
         var opt = this.pxlImages.stream().filter(image -> id.equals(image.id)).findFirst();
         if (opt.isPresent())
             return opt.get().I == null ? opt.get().P : opt.get().I;

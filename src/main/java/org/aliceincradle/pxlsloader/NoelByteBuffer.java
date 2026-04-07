@@ -51,10 +51,8 @@ public class NoelByteBuffer {
     }
     
     public int getInt() {
-        return ((buf[readPos++] & 0xFF) << 24) |
-               ((buf[readPos++] & 0xFF) << 16) |
-               ((buf[readPos++] & 0xFF) << 8)  |
-               ((buf[readPos++] & 0xFF));
+        return ((buf[readPos++] & 0xFF) << 24) | ((buf[readPos++] & 0xFF) << 16) |
+               ((buf[readPos++] & 0xFF) << 8) | ((buf[readPos++] & 0xFF));
     }
     
     public void putInt(int i) {
