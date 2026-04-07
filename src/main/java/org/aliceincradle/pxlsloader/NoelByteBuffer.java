@@ -159,8 +159,8 @@ public class NoelByteBuffer {
     }
     
     public void putPixelLinerKey(PixelLinerKey key) {
-        putInt(key.id);
-        putDouble(key.id2);
+        putInt(key.id());
+        putDouble(key.id2());
     }
     
     public NoelByteBuffer getSegment() {
