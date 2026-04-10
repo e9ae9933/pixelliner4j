@@ -32,3 +32,4 @@ jobs:
       with:
         name: PxlsLoader
         path: build/libs/PxlsLoader-1.0-SNAPSHOT-all.jar
+        archive: false
