@@ -27,6 +27,40 @@ import java.util.Set;
 
 public class PixelPreviewer extends JPanel implements ActionListener {
     
+    private final PxlCharacter chara;
+    private final File workingDirectory;
+    
+    // --- 实例变量 ---
+    // 使用原生的 Timer 替代野生的 TickRecorder 和死循环
+    private final Timer gameLoopTimer = new Timer(16, this); // ~60fps
+    private final Set<Integer> pressedKeys = new HashSet<>();
+    private FrameAnimator animator;
+    
+    private int poseId = 0;
+    private int sequenceId = 0;
+    private PxlPose currentPose;
+    private PxlSequence currentSequence;
+    
+    private boolean paused = false;
+    private boolean debugBoxes = false;
+    private String copyStateMsg = "";
+    private int totalTicks = 0;
+    private int mouseX, mouseY;
+    private boolean mouseClicking;
+    
+    public PixelPreviewer(PxlCharacter chara, File workingDirectory) {
+        this.chara = chara;
+        this.workingDirectory = workingDirectory;
+        
+        setPreferredSize(new Dimension(800, 600));
+        setBackground(new Color(43, 45, 48));
+        setFocusable(true);
+        requestFocusInWindow();
+        
+        loadSequence();
+        setupInputListeners();
+    }
+    
     public static void main(String[] args) {
         // 1. 启用极其现代的暗色系 UI 外观
         FlatDarkLaf.setup();
@@ -37,6 +71,10 @@ public class PixelPreviewer extends JPanel implements ActionListener {
     
     private static void createAndShowGUI() {
         JFileChooser chooser = new JFileChooser();
+        String userDir = System.getProperty("user.dir");
+        if (userDir != null) {
+            chooser.setCurrentDirectory(new File(userDir));
+        }
         chooser.setDialogTitle("请选择一个 PixelLiner 文件 (.pxl / .pxls)");
         chooser.setFileFilter(new FileFilter() {
             @Override
@@ -76,40 +114,10 @@ public class PixelPreviewer extends JPanel implements ActionListener {
         }
     }
     
-    // --- 实例变量 ---
-    
-    private final PxlCharacter chara;
-    private final File workingDirectory;
-    private FrameAnimator animator;
-    
-    private int poseId = 0;
-    private int sequenceId = 0;
-    private PxlPose currentPose;
-    private PxlSequence currentSequence;
-    
-    private boolean paused = false;
-    private boolean debugBoxes = false;
-    private String copyStateMsg = "";
-    
-    // 使用原生的 Timer 替代野生的 TickRecorder 和死循环
-    private final Timer gameLoopTimer = new Timer(16, this); // ~60fps
-    private int totalTicks = 0;
-    
-    private int mouseX, mouseY;
-    private boolean mouseClicking;
-    private final Set<Integer> pressedKeys = new HashSet<>();
-    
-    public PixelPreviewer(PxlCharacter chara, File workingDirectory) {
-        this.chara = chara;
-        this.workingDirectory = workingDirectory;
-        
-        setPreferredSize(new Dimension(800, 600));
-        setBackground(new Color(43, 45, 48));
-        setFocusable(true);
-        requestFocusInWindow();
-        
-        loadSequence();
-        setupInputListeners();
+    private static void showErrorDialog(Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        JOptionPane.showMessageDialog(null, sw.toString(), "致命错误", JOptionPane.ERROR_MESSAGE);
     }
     
     private void loadSequence() {
@@ -340,11 +348,5 @@ public class PixelPreviewer extends JPanel implements ActionListener {
                 }
             }
         }.execute();
-    }
-    
-    private static void showErrorDialog(Exception e) {
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        JOptionPane.showMessageDialog(null, sw.toString(), "致命错误", JOptionPane.ERROR_MESSAGE);
     }
 }
