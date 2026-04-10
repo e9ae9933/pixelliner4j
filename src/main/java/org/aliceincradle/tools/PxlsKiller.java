@@ -1,5 +1,6 @@
 package org.aliceincradle.tools;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import org.aliceincradle.pxlsloader.PxlCharacter;
 import org.aliceincradle.pxlsloader.Settings;
 
@@ -222,7 +223,8 @@ public class PxlsKiller extends JFrame {
     public static void main(String[] args) {
         // 设置操作系统原生 UI 外观
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            FlatDarkLaf.setup();
+            // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {
         }
         

@@ -24,9 +24,9 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew clean build
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.2.2
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: PxlsLoader
         path: build/libs/PxlsLoader-1.0-SNAPSHOT-all.jar
